@@ -1,0 +1,14 @@
+# OSX file
+.DS_Store
+
+# Editor config
+.idea/
+.vscode/
+
+# Environment file
+.env
+.env.*
+!.env.example
+
+# Volumes
+volumes/
