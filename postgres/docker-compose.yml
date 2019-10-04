@@ -9,9 +9,9 @@ services:
       - .env
     volumes:
       - ./volumes/var/lib/postgresql/data:/var/lib/postgresql/data
-    # networks:
-    #   - docker_services
+    networks:
+      - docker_services
 
-# networks:
-#   docker_services:
-#     external: true
+networks:
+  docker_services:
+    external: true
