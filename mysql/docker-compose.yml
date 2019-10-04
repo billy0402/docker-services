@@ -10,9 +10,9 @@ services:
       - .env
     volumes:
       - ./volumes/var/lib/mysql:/var/lib/mysql
-    # networks:
-    #   - docker_services
+    networks:
+      - docker_services
 
-# networks:
-#   docker_services:
-#     external: true
+networks:
+  docker_services:
+    external: true
