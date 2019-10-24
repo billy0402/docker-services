@@ -1,0 +1,32 @@
+logLevel = "INFO"
+defaultEntryPoints = ["http"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+  [entryPoints.dashboard]
+  address = ":8080"
+    [entryPoints.dashboard.auth]
+      [entryPoints.dashboard.auth.basic]
+      users = []
+
+[api]
+entrypoint="dashboard"
+
+[retry]
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+watch = true
+exposedByDefault = false
+
+[acme]
+email = "arthurc0102@gmail.com"
+storage = "acme.json"
+onHostRule = true
+entryPoint = "https"
+  [acme.httpChallenge]
+  entryPoint = "http"
