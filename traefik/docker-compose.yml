@@ -2,7 +2,7 @@ version: '3'
 
 services:
   reverse_proxy:
-    image: traefik:1.7
+    image: traefik:1.7-alpine
     restart: always
     networks:
       - web
