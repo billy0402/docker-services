@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  server:
+    image: containous/whoami
+    restart: always
+    labels:
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:whoami.arthurc.me"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.redirect.entryPoint=https"
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
