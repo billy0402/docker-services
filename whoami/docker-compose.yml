@@ -7,7 +7,7 @@ services:
     labels:
       - "traefik.docker.network=web"
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:whoami.arthurc.me"
+      - "traefik.frontend.rule=Host:${HOST}"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.redirect.entryPoint=https"
     networks:
