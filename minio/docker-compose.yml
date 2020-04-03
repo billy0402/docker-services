@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  server:
+    image: minio/minio
+    container_name: minio-server
+    ports:
+      - 9000:9000
+    env_file:
+      - .env
+    volumes:
+      - ./volumes/minio_data:/data
+    networks:
+      - docker_services
+    command: server /data
+
+networks:
+  docker_services:
+    external: true
