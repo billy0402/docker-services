@@ -40,6 +40,29 @@ services:
     depends_on:
       - client
 
+  adminio-ui:
+    image: rzrbld/adminio-ui:latest
+    container_name: adminio-ui
+    ports:
+      - 80:80
+    env_file:
+      - .env
+    networks:
+      - docker_services
+
+  adminio-api:
+    image: rzrbld/adminio-api:latest
+    container_name: adminio-api
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    networks:
+      - docker_services
+    depends_on:
+      - server
+      - adminio-ui
+
 networks:
   docker_services:
     external: true
