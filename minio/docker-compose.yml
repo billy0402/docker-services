@@ -2,7 +2,7 @@ version: '3'
 
 services:
   server:
-    image: minio/minio
+    image: minio/minio:latest
     container_name: minio-server
     ports:
       - 9000:9000
@@ -13,6 +13,32 @@ services:
     networks:
       - docker_services
     command: server /data
+
+  client:
+    image: minio/mc:latest
+    container_name: minio-client
+    env_file:
+      - .env
+    volumes:
+      - ./mcs-setup.sh:/mcs-setup.sh
+    networks:
+      - docker_services
+    entrypoint: sh mcs-setup.sh
+    depends_on:
+      - server
+
+  gui:
+    image: minio/mcs:latest
+    container_name: minio-gui
+    ports:
+      - 9090:9090
+    env_file:
+      - .env
+    networks:
+      - docker_services
+    command: server
+    depends_on:
+      - client
 
 networks:
   docker_services:
