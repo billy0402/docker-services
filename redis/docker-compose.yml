@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  server:
+    image: redis:6
+    container_name: redis-server
+    ports:
+      - 6379:6379
+    env_file:
+      - .env
+    networks:
+      - docker_services
+
+networks:
+  docker_services:
+    external: true
