@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  db:
+    image: mongo:4
+    container_name: mongo-server
+    ports:
+      - 27017:27017
+    env_file:
+      - .env
+    networks:
+      - docker_services
+
+  admin:
+    image: mongo-express:latest
+    container_name: mongo-admin
+    ports:
+      - 8081:8081
+    env_file:
+      - .env
+    networks:
+      - docker_services
+    depends_on:
+      - db
+
+networks:
+  docker_services:
+    external: true
