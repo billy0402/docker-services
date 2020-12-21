@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  server:
+    image: staticdeploy/staticdeploy:latest
+    container_name: static-deploy-server
+    ports:
+      - 80:80
+    env_file:
+      - .env
+    networks:
+      - docker_services
+
+networks:
+  docker_services:
+    external: true
