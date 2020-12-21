@@ -23,13 +23,14 @@ services:
       - ./mcs-setup.sh:/mcs-setup.sh
     networks:
       - docker_services
+    # entrypoint: tail -F anything
     entrypoint: sh mcs-setup.sh
     depends_on:
       - server
 
-  gui:
-    image: minio/mcs:latest
-    container_name: minio-gui
+  admin:
+    image: minio/console:latest
+    container_name: minio-admin
     ports:
       - 9090:9090
     env_file:
@@ -38,7 +39,7 @@ services:
       - docker_services
     command: server
     depends_on:
-      - client
+      - server
 
   adminio-ui:
     image: rzrbld/adminio-ui:latest

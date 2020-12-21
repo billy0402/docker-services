@@ -1,28 +1,28 @@
-mc config host add myminio ${MCS_MINIO_SERVER} ${MINIO_ACCESS_KEY} ${MINIO_SECRET_KEY} --api s3v4
-mc admin user add myminio ${MCS_ACCESS_KEY} ${MCS_SECRET_KEY}
-cat > mcsAdmin.json << EOF
+mc alias set myminio ${CONSOLE_MINIO_SERVER} ${MINIO_ACCESS_KEY} ${MINIO_SECRET_KEY} --api S3v4
+mc admin user add myminio ${CONSOLE_ACCESS_KEY} ${CONSOLE_SECRET_KEY}
+cat > consoleAdmin.json << EOF
 {
-	"Version": "2012-10-17",
-	"Statement": [
+    "Version": "2012-10-17",
+    "Statement": [
         {
-			"Action": [
-				"admin:*"
-			],
-			"Effect": "Allow",
-			"Sid": "s01"
-		},
-		{
-			"Action": [
+            "Sid": "admin",
+            "Effect": "Allow",
+            "Action": [
+                "admin:*"
+            ]
+        },
+        {
+            "Sid": "s3-admin",
+            "Effect": "Allow",
+            "Action": [
                 "s3:*"
-			],
-			"Effect": "Allow",
-			"Resource": [
-				"arn:aws:s3:::*"
-			],
-			"Sid": "s02"
-		}
-	]
+            ],
+            "Resource": [
+                "arn:aws:s3:::*"
+            ]
+        }
+    ]
 }
 EOF
-mc admin policy add myminio mcsAdmin mcsAdmin.json
-mc admin policy set myminio mcsAdmin user=${MCS_ACCESS_KEY}
+mc admin policy add myminio consoleAdmin consoleAdmin.json
+mc admin policy set myminio consoleAdmin user=${CONSOLE_ACCESS_KEY}
