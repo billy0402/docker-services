@@ -6,13 +6,14 @@ services:
     container_name: minio-server
     ports:
       - 9000:9000
+      - 9001:9001
     env_file:
       - .env
     volumes:
       - ./volumes/minio_data:/data
     networks:
       - docker_services
-    command: server /data
+    command: server /data --console-address ":9001"
 
 networks:
   docker_services:
