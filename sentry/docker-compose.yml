@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+    redis:
+        image: redis:latest
+        container_name: sentry-redis
+
+    postgres:
+        image: postgres:latest
+        container_name: sentry-postgres
+        env_file:
+            - .env
+        volumes:
+            - /var/lib/postgresql/data
+
+    sentry:
+        image: sentry:latest
+        container_name: my-sentry
+        env_file:
+            - .env
+        links:
+            - redis
+            - postgres
+        ports:
+            - 8080:9000
+
+    sentry-cron:
+        image: sentry
+        container_name: sentry-cron
+        env_file:
+            - .env
+        links:
+            - redis
+            - postgres
+        command: sentry run cron
+
+    sentry-worker:
+        image: sentry
+        container_name: sentry-worker
+        env_file:
+            - .env
+        links:
+            - redis
+            - postgres
+        command: sentry run worker
