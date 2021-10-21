@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  db:
+    image: sonarqube:latest
+    container_name: sonarqube-server
+    ports:
+      - 9000:9000
+    env_file:
+      - .env
+    volumes:
+      - ./volumes/data:/opt/sonarqube/data
+      - ./volumes/logs:/opt/sonarqube/logs
+      - ./volumes/extensions:/opt/sonarqube/extensions
+    networks:
+      - docker_services
+
+networks:
+  docker_services:
+    external: true
