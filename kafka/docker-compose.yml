@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    container_name: zookeeper-server
+    ports:
+      - 2181:2181
+    env_file:
+      - .env
+    volumes:
+      - ./volumes/zookeeper_data:/bitnami/zookeeper_data
+    networks:
+      - docker_services
+
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: kafka-server
+    ports:
+      - 9092:9092
+    env_file:
+      - .env
+    volumes:
+      - ./volumes/kafka_data:/bitnami/kafka_data
+    networks:
+      - docker_services
+    depends_on:
+      - zookeeper
+
+networks:
+  docker_services:
+    external: true
