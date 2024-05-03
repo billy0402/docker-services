@@ -12,3 +12,7 @@
 
 # Volumes
 volumes/
+
+# SonarQube
+sonarqube/sonar-scanner/
+sonarqube/sonar-scanner.sh

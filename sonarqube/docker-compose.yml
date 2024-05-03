@@ -1,9 +1,10 @@
 version: '3'
 
 services:
-  db:
-    image: sonarqube:latest
+  sonarqube:
+    image: sonarqube:lts-community
     container_name: sonarqube-server
+    hostname: sonarqube
     ports:
       - 9000:9000
     env_file:
@@ -14,6 +15,26 @@ services:
       - ./volumes/extensions:/opt/sonarqube/extensions
     networks:
       - docker_services
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:latest
+    container_name: sonarqube-postgres
+    hostname: postgresql
+    env_file:
+      - .env
+    volumes:
+      - ./volumes/postgresql:/var/lib/postgresql
+      - ./volumes/pg_data:/var/lib/postgresql/data
+    networks:
+      - docker_services
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready']
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 networks:
   docker_services:
