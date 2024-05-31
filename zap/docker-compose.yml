@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  zap:
+    image: zaproxy/zap-stable:latest
+    container_name: zap-server
+    ports:
+      - 8080:8080
+      - 8090:8090
+    volumes:
+      - ./volumes/data:/zap/wrk/:rw
+    networks:
+      - docker_services
+    command: >
+      zap-webswing.sh
+
+networks:
+  docker_services:
+    external: true
