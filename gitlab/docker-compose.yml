@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
+    hostname: 'gitlab.example.com'
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+      - '22:22'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.example.com'
+        letsencrypt['enable'] = false
+    volumes:
+      - './volumes/config:/etc/gitlab'
+      - './volumes/logs:/var/log/gitlab'
+      - './volumes/data:/var/opt/gitlab'
+    networks:
+      - docker_services
+    shm_size: '256m'
+
+networks:
+  docker_services:
+    external: true
