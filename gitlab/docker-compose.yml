@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+  gitlab:
+    image: gitlab/gitlab-ee:latest
+    container_name: gitlab
+    hostname: 'gitlab.example.com'
+    restart: always
+    ports:
+      - '8929:8929'
+      - '443:443'
+      - '2424:22'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.example.com:8929'
+        letsencrypt['enable'] = false
+        gitlab_rails['gitlab_shell_ssh_port'] = 2424
+        gitlab_rails['smtp_enable'] = true
+        gitlab_rails['smtp_address'] = "smtp.gmail.com"
+        gitlab_rails['smtp_port'] = 587
+        gitlab_rails['smtp_user_name'] = "smtp user"
+        gitlab_rails['smtp_password'] = "smtp password"
+        gitlab_rails['smtp_domain'] = "smtp.gmail.com"
+        gitlab_rails['smtp_authentication'] = "login"
+        gitlab_rails['smtp_enable_starttls_auto'] = true
+        gitlab_rails['smtp_openssl_verify_mode'] = "peer"
+        gitlab_rails['gitlab_email_display_name'] = "GitLab Example"
+        gitlab_rails['gitlab_email_from'] = "noreply@gmail.com"
+        gitlab_rails['gitlab_email_reply_to'] = "noreply@gmail.com"
+    secrets:
+      - gitlab_root_password
+    volumes:
+      - './volumes/config:/etc/gitlab'
+      - './volumes/logs:/var/log/gitlab'
+      - 'gitlab_data:/var/opt/gitlab'
+    networks:
+      - docker_services
+    shm_size: '256m'
+
+  gitlab-runner:
+    image: gitlab/gitlab-runner:latest
+    container_name: gitlab-runner
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - gitlab_runner_config:/etc/gitlab-runner
+    networks:
+      - docker_services
+
+volumes:
+  gitlab_data:
+  gitlab_runner_config:
+
+secrets:
+  gitlab_root_password:
+    file: ./root_password.txt
+
+networks:
+  docker_services:
+    external: true
