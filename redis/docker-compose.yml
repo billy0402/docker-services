@@ -6,8 +6,14 @@ services:
     container_name: redis-server
     ports:
       - 6379:6379
-    env_file:
-      - .env
+    networks:
+      - docker_services
+
+  insight:
+    image: redis/redisinsight:latest
+    container_name: redis-insight
+    ports:
+      - 5540:5540
     networks:
       - docker_services
 
